@@ -1,10 +1,9 @@
 <template>
     <div class="vue-uploader">
         <div class="file-list">
-            <section v-for="(file, index) of files" class="file-item draggable-item">
+            <section v-for="(file, index) of files" class="file-item draggable-item" :key="index">
                 <img :src="file.src" alt="" ondragstart="return false;">
-                <p class="file-name">{{file.name}}</p>
-                <span class="file-remove" @click="remove(index)">+</span>
+                <span class="file-remove" @click="remove(index)"></span>
             </section>
             <section v-if="status == 'ready'" class="file-item">
                 <div @click="add" class="add">
@@ -53,8 +52,10 @@
                 }
                 const formData = new FormData()
                 this.files.forEach((item) => {
-                    formData.append(item.name, item.file)
+                    formData.append('files[]', item.file)
                 })
+                // console.log(formData);return
+                
                 const xhr = new XMLHttpRequest()
                 xhr.upload.addEventListener('progress', this.uploadProgress, false)
                 xhr.open('POST', this.src, true)
@@ -79,6 +80,7 @@
             },
             fileChanged() {
                 const list = this.$refs.file.files
+                
                 for (let i = 0; i < list.length; i++) {
                     if (!this.isContain(list[i])) {
                         const item = {
@@ -88,14 +90,17 @@
                         }
                         this.html5Reader(list[i], item)
                         this.files.push(item)
+                        console.log(this.files);return
                     }
                 }
                 this.$refs.file.value = ''
             },
             // 将图片文件转成BASE64格式
             html5Reader(file, item){
+                // console.log(item);return
                 const reader = new FileReader()
                 reader.onload = (e) => {
+                    // console.log(e.target.result);return
                     this.$set(item, 'src', e.target.result)
                 }
                 reader.readAsDataURL(file)
@@ -123,13 +128,13 @@
     padding: 10px 0px;
 }
 .vue-uploader .file-list:after {
-    content: '';
+    /* content: '';
     display: block;
     clear: both;
     visibility: hidden;
     line-height: 0;
     height: 0;
-    font-size: 0;
+    font-size: 0; */
 }
 .vue-uploader .file-list .file-item {
     float: left;
@@ -138,11 +143,38 @@
     text-align: center;
 }
 .vue-uploader .file-list .file-item img{
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     border: 1px solid #ececec;
 }
 .vue-uploader .file-list .file-item .file-remove {
+
+    /* -webkit-appearance: none;
+    background-color: rgba(10, 10, 10, 0.2);
+    border: none;
+    border-radius: 290486px;
+    cursor: pointer;
+    display: inline-block;
+    -webkit-box-flex: 0;
+    -ms-flex-positive: 0;
+    flex-grow: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    font-size: 0;
+    height: 20px;
+    max-height: 20px;
+    max-width: 20px;
+    min-height: 20px;
+    min-width: 20px;
+    outline: none;
+    position: relative;
+    vertical-align: top;
+    right: 14px;
+    display: none;
+    top: 4px;
+    position: absolute; */
+
+
     position: absolute;
     right: 12px;
     display: none;
@@ -154,10 +186,44 @@
     line-height: 12px;
     border-radius: 100%;
     transform: rotate(45deg);
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.5);    
+} 
+
+.vue-uploader .file-list .file-item .file-remove::before {
+    height: 2px;
+    width: 50%;
+
+    background-color: white;
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
 }
+
+.vue-uploader .file-list .file-item .file-remove::after {
+    height: 50%;
+    width: 2px;
+
+    background-color: white;
+    content: "";
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    transform: translateX(-50%) translateY(-50%) rotate(45deg);
+    -webkit-transform-origin: center center;
+    transform-origin: center center;
+}
+
 .vue-uploader .file-list .file-item:hover .file-remove {
     display: inline;
+    background-color: #ff0000;
 }
 .vue-uploader .file-list .file-item .file-name {
     margin: 0;
@@ -171,12 +237,12 @@
     -webkit-box-orient: vertical;
 }
 .vue-uploader .add {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
     margin-left: 10px;
     float: left;
     text-align: center;
-    line-height: 80px;
+    line-height: 120px;
     border: 1px dashed #ececec;
     font-size: 30px;
     cursor: pointer;
@@ -187,7 +253,7 @@
     margin: 0px;
     background: #f8f8f8;
     border-top: 1px solid #ececec;
-}
+} 
 .vue-uploader .upload-func .progress-bar {
     flex-grow: 1;
 }

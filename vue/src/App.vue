@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <router-view/>
-    <!-- <upload></upload>     -->
-    <test :src="'/api/imgs'"></test>
+    <upload></upload>    
+    <!-- <test :src="'/api/create'"></test> -->
   </div>
 </template>
 
