@@ -2,7 +2,7 @@
   <div id="app">
     <router-view/>
         <ul>
-            <li v-for="item in list" :key="item.id" @click="pickTag(item)" class="tag" v-bind:class="{'is-warning':item.checked}">
+            <li v-for="item in list" :key="item.id" @click="pickTag(item)" class="tag" v-bind:class="{'is-warning':tagsId.includes(item.id)}">
                 <a>{{item.name}}</a>
             </li>
         </ul>
@@ -24,7 +24,6 @@ export default {
                 {'id': 4, 'name': 'test4'},
             ],
             tagsId: [],
-            isWarning: -1,
         }
     },
     components: {
@@ -45,13 +44,13 @@ export default {
                 this.tagsId.push(id)
             }else {
                 this.tagsId.splice(idIndex,1)
-            }
+            }           
 
-            if(typeof item.checked == 'undefined') {
-                this.$set(item, 'checked', true)
-            } else {
-                item.checked = !item.checked
-            }
+            // if(typeof item.checked == 'undefined') {
+            //     this.$set(item, 'checked', true)
+            // } else {
+            //     item.checked = !item.checked
+            // }
         }
     }
 };
