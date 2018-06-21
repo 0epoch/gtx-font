@@ -1,67 +1,12 @@
 <template>
   <div id="app">
     <router-view/>
-    <!-- <upload></upload>     -->
-
-<article class="bd-tw bd-is-grey bd-has-drawing">
-  <header class="bd-tw-header">
-    <a class="bd-tw-author" href="https://twitter.com/RobStuttaford/status/860885116909998080" target="_blank">
-      <figure class="bd-tw-avatar">
-        <img class="lazyload" src="https://pbs.twimg.com/profile_images/496667049704173569/mXZt999g_normal.jpeg">
-      </figure>
-      <div class="bd-tw-name">
-        <strong class="bd-tw-fullname">
-          Robert Stuttaford
-        </strong>
-        <span class="bd-tw-username">
-          @RobStuttaford
-        </span>
-      </div>
-    </a>
-  </header>
-
-  <div class="bd-tw-content">
-    which means no JS opinions included!
-  </div>
-
-  <p class="bd-tw-date">
-      4:53 PM - 6 May 2017
-  </p>
-
-  <ul class="Tweet-actions">
-    <li class="Tweet-action">
-      <a class="TweetAction TweetAction--replyEdge web-intent" href="https://twitter.com/intent/tweet?in_reply_to=860885116909998080">
-        <div class="Icon Icon--reply TweetAction-icon Icon--replyEdge"></div>
-      </a>
-    </li>
-    <li class="Tweet-action Tweet-action--retweet">
-      <a class="TweetAction TweetAction--retweetEdge web-intent" href="https://twitter.com/intent/retweet?tweet_id=860885116909998080">
-        <div class="Icon Icon--retweet TweetAction-icon Icon--retweetEdge"></div>
-        
-          <span class="TweetAction-stat">
-            12
-          </span>
-        
-      </a>
-    </li>
-    <li class="Tweet-action Tweet-action--heart">
-      <a class="TweetAction TweetAction--heartEdge web-intent" href="https://twitter.com/intent/like?tweet_id=860885116909998080&amp;ref_src=twsrc%5Etfw&amp;ref_url=http%3A%2F%2Fbulma.io%2F&amp;original_referer=http%3A%2F%2Fbulma.io%2F&amp;tw_i=860885116909998080&amp;tw_p=tweetembed" target="_blank">
-        <div class="Icon Icon--heartEdge TweetAction-icon Icon--heartEdge"></div>
-        
-          <span class="TweetAction-stat">
-            34
-          </span>
-        
-      </a>
-    </li>
-  </ul>
-
-  
-    <img class="bd-drawing bd-is-opinion-free" src="https://bulma.io/images/drawing/opinion-free.png" width="152" height="52">
-
-  
-</article>
-
+        <ul>
+            <li v-for="item in list" :key="item.id" @click="pickTag(item)" class="tag" v-bind:class="{'is-warning':item.checked}">
+                <a>{{item.name}}</a>
+            </li>
+        </ul>
+        <p>{{tagsId}}</p>
   </div>
 </template>
 
@@ -72,12 +17,42 @@ export default {
     name: "App",
     data() {
         return {
-
+            list: [
+                {'id': 1, 'name': 'test1'},
+                {'id': 2, 'name': 'test2'},
+                {'id': 3, 'name': 'test3'},
+                {'id': 4, 'name': 'test4'},
+            ],
+            tagsId: [],
+            isWarning: -1,
         }
     },
     components: {
         "upload": Upload,
         "test": Test
+    },
+    computed: {
+        // isWarning: function() {
+        //     this.isWarning = !this.isWarning
+        // }
+    },
+    methods: {
+        pickTag: function(item) {            
+            let id = item.id
+            let idIndex = this.tagsId.indexOf(id)
+
+            if(-1 === idIndex) {
+                this.tagsId.push(id)
+            }else {
+                this.tagsId.splice(idIndex,1)
+            }
+
+            if(typeof item.checked == 'undefined') {
+                this.$set(item, 'checked', true)
+            } else {
+                item.checked = !item.checked
+            }
+        }
     }
 };
 </script>
