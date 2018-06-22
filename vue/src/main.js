@@ -6,6 +6,16 @@ import router from './router'
 import 'bulma/css/bulma.css';
 import axios from 'axios'
 
+axios.interceptors.request.use(config => {
+    let token = localStorage.getItem('access_token')
+    if(token) {
+        config.headers.access_token = token
+    }
+    return config
+}, error => {
+    return Promise.reject(error)
+})
+
 Vue.prototype.axios = axios
 Vue.config.productionTip = false
 
