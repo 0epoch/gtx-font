@@ -9,7 +9,7 @@ import axios from 'axios'
 axios.interceptors.request.use(config => {
     let token = localStorage.getItem('access_token')
     if(token) {
-        config.headers.access_token = token
+        config.headers.Authorization  = token
     }
     return config
 }, error => {
