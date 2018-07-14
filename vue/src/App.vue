@@ -1,14 +1,16 @@
 <template>
   <div id="app">
     <router-view/>
-    <button class="is-button" @click="test">xxxxxxxx</button>
-    <button class="is-button" @click="login">login</button>
+    <!-- <button class="is-button" @click="test">xxxxxxxx</button>
+    <button class="is-button" @click="login">login</button> -->
   </div>
 </template>
 
 <script>
 import Upload from '@/components/Upload'
 import Test from '@/components/Test'
+// import {Message, MessageBox} from 'element-ui';
+
 export default {
     name: "App",
     data() {
@@ -28,26 +30,20 @@ export default {
     },
     methods: {
         test: function() {
-            this.axios.get('/api/test')
+            this.axios.get('/api/index')
             .then(function(rsp) {
-                console.log(rsp)
+                this.$message({
+                    showClose: true,
+                    message: 111,
+                    type: 'error',
+                    duration: 2000
+            })
             })
             .catch(function(error) {
 
             })
         },
-        login: function() {
-            var data = {email: '111@qq.com', password: 111111}
-            this.axios.post('/api/login', data)
-            .then(function(rsp) {
-                console.log(rsp.data)
-                localStorage.setItem('access_token', rsp.data.access_token);
-            })
-            .catch(function(error) {
-
-            })
-        }
-        
+       
     }
 };
 </script>
